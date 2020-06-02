@@ -1,0 +1,90 @@
+<?php
+
+function fossee_forum_discussion_schema()
+{
+	$schema = array();
+
+	$schema['fossee_forum_discussion_comments'] = array(
+		'description' => 'Schema to store all the comments.',
+		'fields' => array(
+	      		'comment_id' => array(
+	         	'description' => 'Unique id for each comments',
+	         	'type'        => 'serial',
+	         	'unsigned'    => TRUE,
+	         	'not null'    => TRUE,
+	       		),
+	      		'user_id' => array(
+	         	'description' => 'User Id for each comments',
+	         	'type'        => 'int',
+	         	'not null'    => TRUE,
+	       		),
+	       		'user_name' => array(
+	         	'description' => 'User name for each comments',
+	         	'type'        => 'text',
+	         	'not null'    => TRUE,
+	       		),
+	       		'user_email' => array(
+	         	'description' => 'User email for each comments',
+	         	'type'        => 'text',
+	         	'not null'    => TRUE,
+	       		),
+	      		'comment_msg' => array(
+	         	'description' => 'Comment Text',
+	         	'type'        => 'text',
+	         	'not null'    => TRUE,
+	       		),
+	       		'forum_id' => array(
+	         	'description' => 'Stores the ID of page as Forum Id',
+	         	'type'        => 'text',
+	         	'not null'    => TRUE,
+	       		),
+	       		
+	   	),
+		'primary key' => array('comment_id'),
+	);
+	$schema['fossee_forum_discussion_comment_replies'] = array(
+		'description' => 'Schema to store all the replies of a single parent comment.',
+		'fields' => array(
+	      		'reply_message_id' => array(
+	         	'description' => 'Unique id for each replies',
+	         	'type'        => 'serial',
+	         	'unsigned'    => TRUE,
+	         	'not null'    => TRUE,
+	       		),
+	       		'parent_comment_id' => array(
+	         	'description' => 'Parent comment Id for each replies.',
+	         	'type'        => 'int',
+	         	'unsigned'    => TRUE,
+	         	'not null'    => TRUE,
+	       		),
+	      		'user_id' => array(
+	         	'description' => 'User Id for each replies',
+	         	'type'        => 'int',
+	         	'not null'    => TRUE,
+	       		),
+	       		'user_name' => array(
+	         	'description' => 'User name for each replies',
+	         	'type'        => 'text',
+	         	'not null'    => TRUE,
+	       		),
+	       		'user_email' => array(
+	         	'description' => 'User email for each comments',
+	         	'type'        => 'text',
+	         	'not null'    => TRUE,
+	       		),
+	      		'reply_message' => array(
+	         	'description' => 'Reply Message',
+	         	'type'        => 'text',
+	         	'not null'    => TRUE,
+				),
+				'forum_id' => array(
+				'description' => 'Stores the ID of page as Forum Id',
+				'type'        => 'text',
+				'not null'    => TRUE,
+				),
+	   	),
+	         'primary key' => array('reply_message_id'),
+	);
+	return $schema;
+}
+

@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function fossee_forum_discussion_theme($existing, $type, $theme, $path) 
+{
+	return [
+	  'commentview' => [
+		'variables' => array(
+			'comment' => NULL,
+			'reply' => NULL,
+			'form' => NULL,
+			'status' => NULL,
+			'redirect' => NULL,
+			),
+		],
+	];
+}
+
+
+
+/**
+ * Implements hook_mail().
+ */
+function fossee_forum_discussion_mail($key, &$message, $params) {
+	$options = array(
+	  'langcode' => $message['langcode'],
+	);
+  
+
+	switch($key)
+	{
+		case 'comment_email_to_author':
+			$message['from'] = $params['comment_email_to_author']['From'];
+			$message['headers']['Bcc'] = $params['comment_email_to_author']['Bcc'];
+			$message['headers']['Cc'] = $params['comment_email_to_author']['Cc'];
+			$message['subject'] = t("Your comment has been successfully posted.");
+			$message['body'][]  = t("Comment message: @comment_msg", array('@comment_msg' => $params['comment_email_to_author']['comment_msg']));
+			break;
+			
+		case 'reply_email_to_author':
+			$message['from'] = $params['reply_email_to_author']['From'];
+			$message['headers']['Bcc'] = $params['reply_email_to_author']['Bcc'];
+			$message['headers']['Cc'] = $params['reply_email_to_author']['Cc'];
+			$message['subject'] = t("Your reply has been successfully posted.");
+			$message['body'][]  = t("Reply message: @reply_msg", array('@reply_msg' => $params['reply_email_to_author']['reply_msg']));
+			break;
+			
+		case 'reply_email_to_forum_members':
+			$message['from'] = $params['reply_email_to_forum_members']['From'];
+			$message['headers']['Bcc'] = $params['reply_email_to_forum_members']['Bcc'];
+			$message['headers']['Cc'] = $params['reply_email_to_forum_members']['Cc'];
+			$message['subject'] = t("A new reply has been posted under @title.");
+			$message['body'][]  = t("Reply message: @reply_msg", array('@reply_msg' => $params['reply_email_to_forum_members']['reply_msg']));
+			break;
+	}
+  }
+  

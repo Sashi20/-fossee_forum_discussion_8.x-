@@ -1,0 +1,103 @@
+<h1 style="font-size:35px; color: #178a7a;margin-bottom:5%">Comments</h1>
+
+{% if comment %}
+{% set i = 1 %}
+    {% for a in comment %}
+		{% set count = 0 %}
+		{% for r in reply %}
+			{% if a.comment_id == r.parent_comment_id %}
+				{% set count = count+1 %}
+			{% endif %}
+		{% endfor %}
+
+    	<div style="margin-left:3%;width:85%;height:100%;margin-bottom:1.5%" id="demo">
+			<p id="redirect" style="display:none">{{ redirect }}</p>
+		    <p style="border:1px solid #868686;border-radius:30px;color:black;padding:1% 1%;padding-left:2%;margin-bottom:0%">
+                {{ a.comment_msg }}
+		    </p>
+			<p style="display:inline-block;padding-left:1%;margin-bottom:1%;margin-left:2%;">
+				<a style="text-decoration:none;cursor:pointer;border:0" onclick="toggleReplyForm({{ i }},{{ a.comment_id }},{{ status }})">Reply</a>
+			</p>
+			<p style="display:inline-block;padding-left:3%;cursor:pointer;color:#015f8c" onclick="toggleReplyView({{ i }})">
+				{{ count }} Reply
+			</p>
+		    <p style="color:black;float:right;margin:0;font-size:13px;margin-right:3%;">
+		    	{{ a.user_name }}
+		    </p>
+
+			<div style="width:85%;margin:1% auto 5% auto;display:none;" id="replydiv{{ i }}">
+				{% for r in reply %}
+					{% if r.parent_comment_id == a.comment_id %}
+						<div style="margin-bottom:3.5%;">
+						   <p style='border:1px solid #868686;border-radius:30px;padding:0.8% 1.5%;margin-bottom:0%;color:black;margin-top:0'>
+						        {{ r.reply_msg}}
+						   	</p>
+						   <p style='font-size:12px;margin-bottom:2%;padding:0;color:black;float:right;margin-right:3%;'>
+						   		{{ r.user_name }}
+							</p>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+
+			<div style="width:70%;margin:0 auto;text-align:center;margin-bottom:1%;display:none;" id="replyform{{ i }}">
+				{{ form }}
+			</div>
+        </div>
+		{% set i = i+1 %}
+    {% endfor %}
+
+
+
+{% else %}
+    <div style="width:100%;text-align:center;margin-bottom:10%;margin-top:0">
+		<h1 style="font-size:35px;color:#db9b9b;">No Comments</h1>
+	</div>
+{% endif %}
+
+
+
+
+
+<script>
+
+	function toggleReplyForm(index, comment_id, status)
+	{
+		if(status)
+		{
+			var replyForm = document.getElementById("replyform"+index);
+			var comment_id_input = document.getElementsByName("cid")[index-1];
+
+
+			if(replyForm.style.display === "none")
+			{
+				replyForm.style.display = "block";
+				comment_id_input.value = comment_id;
+			}
+			else
+			{
+				replyForm.style.display = "none";
+			}
+		}
+		else
+		{
+			var reidrectUrl = document.getElementById("redirect").innerHTML;
+			window.location =  reidrectUrl;
+		}
+		
+	}
+
+	function toggleReplyView(i)
+	{
+		var div = document.getElementById("replydiv"+i);
+		if(div.style.display === "none")
+		{
+			div.style.display = "block";
+		}
+		else
+		{
+			div.style.display = "none";
+		}
+	}
+	
+</script>

@@ -1,0 +1,9 @@
+name: "Fossee Forum Discussion"
+type: 'module'
+description: "A simple forum discussion module for Drupal 8."
+core: '8.x'
+version: '8.x-1.0'
+configure: fossee_forum_discussion.admin_settings
+dependencies:
+  - node
+  - block
